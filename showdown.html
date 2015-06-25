@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>\
 <html>
     <head>
         <title>ShowDown, BlowDown</title>
@@ -7,18 +7,106 @@
     <body>
         <h3>Click to play, click to shoot first after it says DRAW! to win. Dont shoot too early or you'll lose!</h3> 
         <script>
+        var gameState;
+        var countdownSeconds = 3;
         function doPreload(){
-            
+            game.load.baseURL ="http://files.phaser.io.s3.amazonaws.com/codingtips/issue006/assets/";
+            game.load.crossOrigin = "anonymous";
+            game.load.image('standoff', 'standoff.png');
+            game.load.audio('fire', 'fire.mp3');
+            game.load.audio('splat', 'splat.mp3');
+            game.load.image("win", "win.png");
+            game.load.image("lose", "lose.png");
         }
         
         function doCreate(){
+            game.standoff = game.add.sprite(0,0)
+            game.message = game.add.text(400,400);
+            game.message.text = "Click to Play";
             
+            game.input.onDown.add(function(){
+                if(gameState === "start"){
+                    doCountdown();
+                } else if(gameState === "countdown"){
+                    doTooSoon();
+                } else if(gameState === "draw"){
+                    doWin();
+                    game.sound.play('fire');
+                    doWin();
+                } else if(gameState === "tryAgain"){
+                    doStart();
+                }
+              
+            });
+            doStart();
+           
         }
         
+        function doStart(){
+            gameState = "start";
+            game.message.text = "click to Play!"
+            game.standoff.loadTexture('standoff');
+        }
         
+        function doCountdown(){
+            gameState = "countdown";
+            var actualCountdown = countdownSeconds;
+            game.message.text = actualCountdown;
+            game.time.events.loop(1000, function(){
+                actualCountdown = actualCountdown - 1; 
+                game.message.text = actualCountdown
+                if(actualCountdown === 0){
+                    doDraw();
+                }
+            });
+        } 
+        
+           function doDraw(){
+               gameState = "draw";
+               game.time.events.removeAll();
+               game.message.text = "DRAW!";
+               game.time.events.add(1000, function(){
+                   doLose();
+               });
+           } 
+           
+            function doTooSoon(){
+               gameState = "toosoon";
+               game.time.events.removeAll();
+               game.message.text = "TOO SOON!"
+                game.time.events.add(1000, function(){
+                   doTryAgain();
+               });
+            }
+            
+            function doWin(){
+                gameState = "Win";
+                game.time.events.removeAll();
+                game.message.text = "YOU WIN";
+                game.standoff.loadTexture("win");
+                game.time.events.add(1000, function(){
+                   doTryAgain();
+               });
+            }
+            
+            function doLose(){
+                gameState = "Lose";
+                game.message.text = "YOU LOSE";
+                game.standoff.loadTexture("lose");
+                game.sound.play('splat');
+                game.time.events.add(1000, function(){
+                   doTryAgain();
+               });
+            }
+            
+            function doTryAgain(){
+                gameState = "tryAgain";
+                game.message.text = "click to TRYAGAIN"
+            }
+            
             var game = new Phaser.Game(640, 480, Phaser.AUTO,'', {
                 preload: doPreload,
-                create: docreate
+                create: doCreate
             });
         </script>
     </body>
