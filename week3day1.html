@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+</head><body>
+  <div id="everything">
+      <h1>A heading!</h1>
+      <p>Here's some text!</p>
+      <p>Here's a second set of text!</p>
+      <div class="holder">
+          <ul>
+              <li>List Item 1</li>
+              <li>List Item 2</li>
+              <li>List Item 3</li>
+          </ul>
+      </div>
+      <div class="holder">
+          <ul>
+              <li id="changeMe">List Item 4</li>
+              <li>List Item 5</li>
+              <li>List Item 6</li>
+          </ul>
+      </div>
+      <div id="secret">We should hide this!</div>
+      <div id="result"></div>
+  </div>
+  <script>
+    $("h1").css({color:"blue"});
+    $("body").css({"background-color":"hotpink"});
+    $("div").css({"font-size":'110%'});
+    $(".holder").css({"border":"10px solid blue"});
+    $("ul li").css({"font-weight":"bold"});
+    $("h1+p").css({"color":"green"});
+    $("#secret").css({"display":"none"})
+    $("#changeMe").html("Hello im just saying hello");
+    $("#changeMe").append("just adding some text");
+    $("li").html("trying to see what to do");
+    $("li").append("just adding more text to see");
+    $("#secret").css({"display":"block"});
+    $("#secret").html("hello trying something new");
+    $("#everything").append("<h1>hey still testing</h1>");
+  </script>
+  <script>
+  function stringPrinter(message){
+     $("#result").text(message) 
+  }
+  
+  function funnySentence(noun, adjective, verb, adverb){
+      $("#result").html(noun+ " " + adjective+ " " + verb+ " " + adverb);
+  }
+  
+  function multiplication(num){
+      $("#result").html(num*3)
+  }
+      
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src= "https://code.jquery.com/jquery-2.1.4.js"></script>
+    </head>
+    <body>
+        <h3>Current Temp: <span id ="currentTemp"></span></h3>
+        <h3>Today's High: <span id ="todaysHigh"></span></h3>
+        <h3>Today's Low <span id ="todaysLow"></span></h3>
+        <script>
+            var url = "http://api.openweathermap.org/data/2.5/weather?q=New%20Orleans&mode=json&units=imperial";
+            $.get(url, function(data) {
+                console.log(data);
+                $("#currentTemp").text(data.main.temp);
+                $("#todaysHigh").text(data.main.temp_max);
+                $("#todaysLow").text(data.main.temp_min);
+                
+            });
+        </script>
+    </body>
+</html>
